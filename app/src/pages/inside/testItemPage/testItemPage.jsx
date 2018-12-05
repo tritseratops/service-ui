@@ -24,6 +24,7 @@ import {
   deleteItemsAction,
   launchSelector,
   fetchTestItemsAction,
+  namespaceSelector,
 } from 'controllers/testItem';
 import { showModalAction } from 'controllers/modal';
 import { SuitesPage } from 'pages/inside/suitesPage';
@@ -213,6 +214,7 @@ export class TestItemPage extends Component {
       const PageComponent = testItemPages[level];
       return (
         <FilterEntitiesURLContainer
+          namespaceSelector={namespaceSelector}
           render={({ entities, onChange }) => (
             <FilterEntitiesContainer
               entities={entities}
