@@ -6,7 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -41,7 +41,11 @@ export default (env = defaultEnv) => ({
     },
   },
   optimization: {
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new UglifyJsPlugin({
+        parallel: true,
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         styles: {
