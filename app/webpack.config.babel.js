@@ -41,11 +41,7 @@ export default (env = defaultEnv) => ({
     },
   },
   optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-      }),
-    ],
+    minimizer: [new TerserPlugin()],
     splitChunks: {
       cacheGroups: {
         styles: {
