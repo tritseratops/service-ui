@@ -65,6 +65,10 @@ const messages = defineMessages({
     id: 'ProductStatusControls.FiltersNoMatches',
     defaultMessage: 'No matches found.',
   },
+  FiltersValidationError: {
+    id: 'ProductStatusControls.FiltersValidationError',
+    defaultMessage: 'You must select at least one item',
+  },
 });
 const validators = {
   items: (formatMessage) => (value) =>
@@ -233,6 +237,13 @@ export class ProjectActivityControls extends Component {
   parseFilters = (values) =>
     (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
 
+  // added from other widget
+  formatFilterOptions = (values) =>
+    values.content.map((value) => ({ value: value.id, label: value.name }));
+  formatFilters = (values) => values.map((value) => ({ value, label: value.name }));
+  parseFilters = (values) =>
+    (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
+
   render() {
     const {
       intl: { formatMessage },
@@ -324,6 +335,25 @@ export class ProjectActivityControls extends Component {
             removeSelected
           />
         </FieldProvider>
+        {/* <FieldProvider */}
+        {/* name="filterIds" */}
+        {/* format={this.formatFilters} */}
+        {/* parse={this.parseFilters} */}
+        {/* validate={validators.filterIds(formatMessage)} */}
+        {/* > */}
+        {/* <TagsControl */}
+        {/* fieldLabel={formatMessage(messages.FiltersFieldLabel)} */}
+        {/* placeholder={formatMessage(messages.FiltersPlaceholder)} */}
+        {/* focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)} */}
+        {/* nothingFound={formatMessage(messages.FiltersNoMatches)} */}
+        {/* minLength={3} */}
+        {/* async */}
+        {/* multi */}
+        {/* uri={filtersSearchUrl} */}
+        {/* makeOptions={this.formatFilterOptions} */}
+        {/* removeSelected */}
+        {/* /> */}
+        {/* </FieldProvider> */}
       </Fragment>
     );
   }
