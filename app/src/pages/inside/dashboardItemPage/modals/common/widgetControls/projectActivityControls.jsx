@@ -45,6 +45,10 @@ const messages = defineMessages({
     id: 'ProjectActivityControls.ActionTypesValidationError',
     defaultMessage: 'You must select at least one item',
   },
+  FiltersValidationError: {
+    id: 'ProductStatusControls.FiltersValidationError',
+    defaultMessage: 'You must select at least one item',
+  },
 });
 const validators = {
   items: (formatMessage) => (value) =>
@@ -52,6 +56,8 @@ const validators = {
     formatMessage(messages.ItemsValidationError),
   actionType: (formatMessage) => (value) =>
     (!value || !value.length) && formatMessage(messages.ActionTypesValidationError),
+  filterIds: (formatMessage) => (value) =>
+    (!value || !value.length) && formatMessage(messages.FiltersValidationError),
 };
 
 @injectIntl
@@ -64,6 +70,7 @@ export class ProjectActivityControls extends Component {
     widgetSettings: PropTypes.object.isRequired,
     usernamesSearchUrl: PropTypes.string.isRequired,
     initializeControlsForm: PropTypes.func.isRequired,
+    filtersSearchUrl: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -116,6 +123,13 @@ export class ProjectActivityControls extends Component {
   parseUsernames = (values) =>
     (values && values.map((value) => value.value).join(',')) || undefined;
 
+  // added from other widget
+  formatFilterOptions = (values) =>
+    values.content.map((value) => ({ value: value.id, label: value.name }));
+  formatFilters = (values) => values.map((value) => ({ value, label: value.name }));
+  parseFilters = (values) =>
+    (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
+
   render() {
     const {
       intl: { formatMessage },
@@ -167,6 +181,25 @@ export class ProjectActivityControls extends Component {
             removeSelected
           />
         </FieldProvider>
+        {/* <FieldProvider */}
+        {/* name="filterIds" */}
+        {/* format={this.formatFilters} */}
+        {/* parse={this.parseFilters} */}
+        {/* validate={validators.filterIds(formatMessage)} */}
+        {/* > */}
+        {/* <TagsControl */}
+        {/* fieldLabel={formatMessage(messages.FiltersFieldLabel)} */}
+        {/* placeholder={formatMessage(messages.FiltersPlaceholder)} */}
+        {/* focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)} */}
+        {/* nothingFound={formatMessage(messages.FiltersNoMatches)} */}
+        {/* minLength={3} */}
+        {/* async */}
+        {/* multi */}
+        {/* uri={filtersSearchUrl} */}
+        {/* makeOptions={this.formatFilterOptions} */}
+        {/* removeSelected */}
+        {/* /> */}
+        {/* </FieldProvider> */}
       </Fragment>
     );
   }
