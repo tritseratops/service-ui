@@ -113,6 +113,7 @@ export class ProjectActivityControls extends Component {
         widgetOptions: {
           actionType: this.parseActionTypes(this.criteria),
           user: '',
+          user2: '',
         },
       },
       filters: [],
@@ -191,6 +192,7 @@ export class ProjectActivityControls extends Component {
         </FieldProvider>
         <FieldProvider
           name="contentParameters.widgetOptions.user"
+          // name="someuser"
           format={this.formatUsernames}
           parse={this.parseUsernames}
         >
@@ -223,6 +225,25 @@ export class ProjectActivityControls extends Component {
             multi
             uri={filtersSearchUrl}
             makeOptions={this.formatFilterOptions}
+            removeSelected
+          />
+        </FieldProvider>
+        <FieldProvider
+          name="contentParameters.widgetOptions.user2"
+          format={this.formatUsernames}
+          parse={this.parseUsernames}
+          // no validate?
+        >
+          <TagsControl
+            fieldLabel={formatMessage(messages.UsernameControlText)}
+            placeholder={formatMessage(messages.UsersPlaceholder)}
+            focusPlaceholder={formatMessage(messages.UsersFocusPlaceholder)}
+            nothingFound={formatMessage(messages.UsersNoMatches)}
+            minLength={3}
+            async
+            multi
+            uri={usernamesSearchUrl}
+            makeOptions={this.formatUsernames}
             removeSelected
           />
         </FieldProvider>
