@@ -327,26 +327,7 @@ export class ProjectActivityControls extends Component {
             async
             multi
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUserOptions}
-            removeSelected
-          />
-        </FieldProvider>
-        <FieldProvider
-          name="filters"
-          format={this.formatFilters} // bug somewhere here, seems initial value is not set, mysteriously dissapeared
-          parse={this.parseFilters}
-          validate={validators.filterIds(formatMessage)}
-        >
-          <TagsControl
-            fieldLabel={formatMessage(messages.FiltersFieldLabel)}
-            placeholder={formatMessage(messages.FiltersPlaceholder)}
-            focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)}
-            nothingFound={formatMessage(messages.FiltersNoMatches)}
-            minLength={3}
-            async
-            multi
-            uri={filtersSearchUrl}
-            makeOptions={this.formatFilterOptions}
+            makeOptions={this.formatUsernames}
             removeSelected
           />
         </FieldProvider>
