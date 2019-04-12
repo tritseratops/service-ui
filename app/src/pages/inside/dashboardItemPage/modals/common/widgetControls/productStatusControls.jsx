@@ -123,7 +123,10 @@ export class ProductStatusControls extends Component {
 
   formatFilterOptions = (values) =>
     values.content.map((value) => ({ value: value.id, label: value.name }));
-  formatFilters = (values) => values.map((value) => ({ value, label: value.name }));
+  formatFilters = (values) => {
+    console.log(`FILTER VALUES:${values}`);
+    values.map((value) => ({ value, label: value.name }));
+  };
   parseFilters = (values) =>
     (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
 

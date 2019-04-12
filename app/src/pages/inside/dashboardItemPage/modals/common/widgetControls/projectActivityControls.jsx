@@ -49,6 +49,22 @@ const messages = defineMessages({
     id: 'ProductStatusControls.FiltersValidationError',
     defaultMessage: 'You must select at least one item',
   },
+  FiltersFieldLabel: {
+    id: 'ProductStatusControls.FiltersFieldLabel',
+    defaultMessage: 'Filters',
+  },
+  FiltersPlaceholder: {
+    id: 'ProductStatusControls.FiltersPlaceholder',
+    defaultMessage: 'Enter filter names',
+  },
+  FiltersFocusPlaceholder: {
+    id: 'ProductStatusControls.FiltersFocusPlaceholder',
+    defaultMessage: 'At least 3 symbols required.',
+  },
+  FiltersNoMatches: {
+    id: 'ProductStatusControls.FiltersNoMatches',
+    defaultMessage: 'No matches found.',
+  },
 });
 const validators = {
   items: (formatMessage) => (value) =>
@@ -63,6 +79,7 @@ const validators = {
 @injectIntl
 @connect((state) => ({
   usernamesSearchUrl: URLS.projectUsernamesSearch(activeProjectSelector(state)),
+  filtersSearchUrl: URLS.filtersSearch(activeProjectSelector(state)),
 }))
 export class ProjectActivityControls extends Component {
   static propTypes = {
@@ -77,6 +94,9 @@ export class ProjectActivityControls extends Component {
     super(props);
     const { intl, widgetSettings, initializeControlsForm } = props;
     this.criteria = getWidgetCriteriaOptions([USER_ACTIONS_OPTIONS], intl.formatMessage);
+    // from other widget
+    // this.criteria = getWidgetCriteriaOptions([DEFECT_TYPES_GROUPS_OPTIONS], intl.formatMessage);
+
     initializeControlsForm({
       contentParameters: widgetSettings.contentParameters || {
         contentFields: [
@@ -126,7 +146,12 @@ export class ProjectActivityControls extends Component {
   // added from other widget
   formatFilterOptions = (values) =>
     values.content.map((value) => ({ value: value.id, label: value.name }));
+  // formatFilters = (values) => {
+  //   // console.log("FILTER VALUES:"+values);
+  //   values.map((value) => ({ value, label: value.name }));
+  // }
   formatFilters = (values) => values.map((value) => ({ value, label: value.name }));
+
   parseFilters = (values) =>
     (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
 
@@ -134,6 +159,7 @@ export class ProjectActivityControls extends Component {
     const {
       intl: { formatMessage },
       usernamesSearchUrl,
+      filtersSearchUrl,
     } = this.props;
 
     return (
@@ -181,25 +207,25 @@ export class ProjectActivityControls extends Component {
             removeSelected
           />
         </FieldProvider>
-        {/* <FieldProvider */}
-        {/* name="filterIds" */}
-        {/* format={this.formatFilters} */}
-        {/* parse={this.parseFilters} */}
-        {/* validate={validators.filterIds(formatMessage)} */}
-        {/* > */}
-        {/* <TagsControl */}
-        {/* fieldLabel={formatMessage(messages.FiltersFieldLabel)} */}
-        {/* placeholder={formatMessage(messages.FiltersPlaceholder)} */}
-        {/* focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)} */}
-        {/* nothingFound={formatMessage(messages.FiltersNoMatches)} */}
-        {/* minLength={3} */}
-        {/* async */}
-        {/* multi */}
-        {/* uri={filtersSearchUrl} */}
-        {/* makeOptions={this.formatFilterOptions} */}
-        {/* removeSelected */}
-        {/* /> */}
-        {/* </FieldProvider> */}
+        <FieldProvider
+          name="filters"
+          format={this.formatFilters} // bug somewhere here, seems initial value is not set, mysteriously dissapeared
+          parse={this.parseFilters}
+          validate={validators.filterIds(formatMessage)}
+        >
+          <TagsControl
+            fieldLabel={formatMessage(messages.FiltersFieldLabel)}
+            placeholder={formatMessage(messages.FiltersPlaceholder)}
+            focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)}
+            nothingFound={formatMessage(messages.FiltersNoMatches)}
+            minLength={3}
+            async
+            multi
+            uri={filtersSearchUrl}
+            makeOptions={this.formatFilterOptions}
+            removeSelected
+          />
+        </FieldProvider>
       </Fragment>
     );
   }
