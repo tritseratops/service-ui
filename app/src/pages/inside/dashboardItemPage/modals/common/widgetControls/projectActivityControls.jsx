@@ -65,10 +65,7 @@ const messages = defineMessages({
     id: 'ProductStatusControls.FiltersNoMatches',
     defaultMessage: 'No matches found.',
   },
-  FiltersValidationError: {
-    id: 'ProductStatusControls.FiltersValidationError',
-    defaultMessage: 'You must select at least one item',
-  },
+
 });
 const validators = {
   items: (formatMessage) => (value) =>
@@ -83,7 +80,6 @@ const validators = {
 @injectIntl
 @connect((state) => ({
   usernamesSearchUrl: URLS.projectUsernamesSearch(activeProjectSelector(state)),
-  filtersSearchUrl: URLS.filtersSearch(activeProjectSelector(state)),
 }))
 export class ProjectActivityControls extends Component {
   static propTypes = {
@@ -335,25 +331,25 @@ export class ProjectActivityControls extends Component {
             removeSelected
           />
         </FieldProvider>
-        {/* <FieldProvider */}
-        {/* name="filterIds" */}
-        {/* format={this.formatFilters} */}
-        {/* parse={this.parseFilters} */}
-        {/* validate={validators.filterIds(formatMessage)} */}
-        {/* > */}
-        {/* <TagsControl */}
-        {/* fieldLabel={formatMessage(messages.FiltersFieldLabel)} */}
-        {/* placeholder={formatMessage(messages.FiltersPlaceholder)} */}
-        {/* focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)} */}
-        {/* nothingFound={formatMessage(messages.FiltersNoMatches)} */}
-        {/* minLength={3} */}
-        {/* async */}
-        {/* multi */}
-        {/* uri={filtersSearchUrl} */}
-        {/* makeOptions={this.formatFilterOptions} */}
-        {/* removeSelected */}
-        {/* /> */}
-        {/* </FieldProvider> */}
+        <FieldProvider
+          name="filters"
+          format={this.formatFilters} // bug somewhere here, seems initial value is not set, mysteriously dissapeared
+          parse={this.parseFilters}
+          validate={validators.filterIds(formatMessage)}
+        >
+          <TagsControl
+            fieldLabel={formatMessage(messages.FiltersFieldLabel)}
+            placeholder={formatMessage(messages.FiltersPlaceholder)}
+            focusPlaceholder={formatMessage(messages.FiltersFocusPlaceholder)}
+            nothingFound={formatMessage(messages.FiltersNoMatches)}
+            minLength={3}
+            async
+            multi
+            uri={filtersSearchUrl}
+            makeOptions={this.formatFilterOptions}
+            removeSelected
+          />
+        </FieldProvider>
       </Fragment>
     );
   }
