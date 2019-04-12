@@ -113,7 +113,7 @@ export class ProjectActivityControls extends Component {
         widgetOptions: {
           actionType: this.parseActionTypes(this.criteria),
           user: '',
-          user2: '',
+          user2: [],
         },
       },
       filters: [],
@@ -141,8 +141,15 @@ export class ProjectActivityControls extends Component {
       value,
       label: value,
     }));
+
   parseUsernames = (values) =>
     (values && values.map((value) => value.value).join(',')) || undefined;
+
+  // updated functions from user names copied from filters
+  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.name }));
+
+  parseUserNames2 = (values) =>
+    (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
 
   // added from other widget
   formatFilterOptions = (values) =>
@@ -230,8 +237,8 @@ export class ProjectActivityControls extends Component {
         </FieldProvider>
         <FieldProvider
           name="contentParameters.widgetOptions.user2"
-          format={this.formatUsernames}
-          parse={this.parseUsernames}
+          format={this.formatUserNames2}
+          parse={this.parseUserNames2}
           // no validate?
         >
           <TagsControl
@@ -243,7 +250,7 @@ export class ProjectActivityControls extends Component {
             async
             multi
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUsernames}
+            makeOptions={this.formatUserNames2}
             removeSelected
           />
         </FieldProvider>
