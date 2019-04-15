@@ -65,7 +65,6 @@ const messages = defineMessages({
     id: 'ProductStatusControls.FiltersNoMatches',
     defaultMessage: 'No matches found.',
   },
-
 });
 const validators = {
   items: (formatMessage) => (value) =>
@@ -153,12 +152,7 @@ export class ProjectActivityControls extends Component {
     }));
 
   // updated functions from user names copied from filters
-  // formatUserNames2 = (values) =>
-  //   values.map((value) => ({ value, label: value.name })); // F1 searches but names are blank, select and clear works ok
-
-  // F2 blank after search and crash when selected
-  // formatUserNames2 = (values) =>
-  //   values.map((value) => ({ value, label: value.value }));
+  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.name }));
 
   // F3 blank after search and crash when selected
   // FINAL solution along with FUO7&P5
@@ -187,39 +181,7 @@ export class ProjectActivityControls extends Component {
 
   // P6
   parseUserNames2 = (values) =>
-    (values && values.map((value) => ({ value: value.label, label: value.label }))) || undefined;
-
-  // formatUserOptions = (values) =>
-  //   values.content.map((value) => ({ value: value.id, label: value.name }));  // does not search users
-
-  // formatUserOptions = (values) =>
-  //   values.content.map((value) => ({ value: value, label: value.name }));
-
-  // FUO3  -  works good with P5, users are veisible after search, cleared, deleted, but not visible while search result selection
-  // formatUserOptions = (values) => values.map((value) => ({ value, label: value.name }));
-
-  // FUO4 return array of strings instead of objects, works with P5 and F2 but no users in search
-  // along with P5 and F2 shows grey screen after selecting second user
-  // formatUserOptions = (values) =>
-  //   values.map((value) => ({ value, label: value.label }));
-
-  // FUO5  // does not search users - no match found
-  // formatUserOptions = (values) =>
-  //   values.content.map((value) => ({ value: value.id, label: value.value }));
-
-  // FUO6 label again undefined
-  // formatUserOptions = (values) =>
-  //   values.map((value) => ({ value, label: value.value }));
-
-  // FUO7 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
-  // with P5&F2 no matches found in search
-  // FINAL solution along with P5&F3
-  // formatUserOptions = (values) =>
-  //   values.map((value) =>
-  //     ({ value, label: value }));
-
-  // FUO8 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
-  formatUserOptions = (values) => values.map((value) => ({ value, label: value }));
+    (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
 
   // added from other widget
   formatFilterOptions = (values) =>
@@ -288,7 +250,7 @@ export class ProjectActivityControls extends Component {
             minLength={3}
             async
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUsernamesOptions}
+            makeOptions={this.formatUsernames}
             multi
             removeSelected
           />
@@ -327,7 +289,7 @@ export class ProjectActivityControls extends Component {
             async
             multi
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUsernames}
+            makeOptions={this.formatUserNames2}
             removeSelected
           />
         </FieldProvider>
