@@ -114,6 +114,7 @@ export class ProjectActivityControls extends Component {
           actionType: this.parseActionTypes(this.criteria),
           user: '',
           user2: [],
+          // user2: '', // with this widget does not load
         },
       },
       filters: [],
@@ -146,10 +147,31 @@ export class ProjectActivityControls extends Component {
     (values && values.map((value) => value.value).join(',')) || undefined;
 
   // updated functions from user names copied from filters
-  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.name }));
+  // formatUserNames2 = (values) =>
+  //   values.map((value) => ({ value, label: value.name })); // O1 searches but names are blank, select and clear works ok
+  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.value })); // blank after search and crash when selected
+  // formatUserNames2 = (values) => values.map((value) => ({ value, label: value })); // outputs correct username after search but then crash with Invalid prop `children` supplied to `Value`, expected a ReactNode.
+  // formatUserNames2 = (values) => values.map((value) => ({ value, label: value.label })); // searches but names are blank, select and clear works ok
+
+  // parseUserNames2 = (values) =>
+  //   (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
+  // parseUserNames2 = (values) =>
+  //   (values && values.map((value) => ({ value: value.value, label: value.label }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode.
+  // parseUserNames2 = (values) =>
+  //   (values && values.map((value) => ({ value: value, label: value }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with O1, not names in search though
+  // parseUserNames2 = (values) =>
+  //   (values && values.map((value) =>
+  //     ({ value: value.value, label: value.label }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with O1, not names in search though
 
   parseUserNames2 = (values) =>
-    (values && values.map((value) => ({ value: value.value, name: value.label }))) || undefined;
+    (values && values.map((value) => ({ value: value.value, label: value.value }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with O1, not names in search though
+
+  // formatUserOptions = (values) =>
+  //   values.content.map((value) => ({ value: value.id, label: value.name }));  // does not search users
+
+  // formatUserOptions = (values) =>
+  //   values.content.map((value) => ({ value: value, label: value.name }));
+  formatUserOptions = (values) => values.map((value) => ({ value, label: value.name }));
 
   // added from other widget
   formatFilterOptions = (values) =>
@@ -250,7 +272,7 @@ export class ProjectActivityControls extends Component {
             async
             multi
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUserNames2}
+            makeOptions={this.formatUserOptions}
             removeSelected
           />
         </FieldProvider>
