@@ -161,6 +161,7 @@ export class ProjectActivityControls extends Component {
   //   values.map((value) => ({ value, label: value.value }));
 
   // F3 blank after search and crash when selected
+  // FINAL solution along with FUO7&P5
   formatUserNames2 = (values) => values.map((value) => ({ value, label: value.value }));
 
   // formatUserNames2 = (values) => values.map((value) => ({ value, label: value })); // outputs correct username after search but then crash with Invalid prop `children` supplied to `Value`, expected a ReactNode.
@@ -179,8 +180,14 @@ export class ProjectActivityControls extends Component {
   // P5 Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with F1, not names in search though
   // works good with F2, users are visible after search, cleared, deleted, but not visible while search result selection
   // gets array in first item instead of value property
+  // FINAL solution along with FUO7&F3
+  // parseUserNames2 = (values) =>
+  //   (values && values.map((value) =>
+  //     ({ value: value.value, label: value.value }))) || undefined;
+
+  // P6
   parseUserNames2 = (values) =>
-    (values && values.map((value) => ({ value: value.value, label: value.value }))) || undefined;
+    (values && values.map((value) => ({ value: value.label, label: value.label }))) || undefined;
 
   // formatUserOptions = (values) =>
   //   values.content.map((value) => ({ value: value.id, label: value.name }));  // does not search users
@@ -206,11 +213,13 @@ export class ProjectActivityControls extends Component {
 
   // FUO7 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
   // with P5&F2 no matches found in search
-  formatUserOptions = (values) => values.map((value) => ({ value, label: value }));
+  // FINAL solution along with P5&F3
+  // formatUserOptions = (values) =>
+  //   values.map((value) =>
+  //     ({ value, label: value }));
 
   // FUO8 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
-  // formatUserOptions = (values) =>
-  // values.map((value) => ({ value:value, label: value }));
+  formatUserOptions = (values) => values.map((value) => ({ value, label: value }));
 
   // added from other widget
   formatFilterOptions = (values) =>
