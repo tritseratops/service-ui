@@ -146,10 +146,23 @@ export class ProjectActivityControls extends Component {
   parseUsernames = (values) =>
     (values && values.map((value) => value.value).join(',')) || undefined;
 
+  formatUsernamesOptions = (values) =>
+    ((values.length && values.split && values.split(',')) || values || []).map((value) => ({
+      value,
+      label: value,
+    }));
+
   // updated functions from user names copied from filters
   // formatUserNames2 = (values) =>
-  //   values.map((value) => ({ value, label: value.name })); // O1 searches but names are blank, select and clear works ok
-  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.value })); // blank after search and crash when selected
+  //   values.map((value) => ({ value, label: value.name })); // F1 searches but names are blank, select and clear works ok
+
+  // F2 blank after search and crash when selected
+  // formatUserNames2 = (values) =>
+  //   values.map((value) => ({ value, label: value.value }));
+
+  // F3 blank after search and crash when selected
+  formatUserNames2 = (values) => values.map((value) => ({ value, label: value.value }));
+
   // formatUserNames2 = (values) => values.map((value) => ({ value, label: value })); // outputs correct username after search but then crash with Invalid prop `children` supplied to `Value`, expected a ReactNode.
   // formatUserNames2 = (values) => values.map((value) => ({ value, label: value.label })); // searches but names are blank, select and clear works ok
 
@@ -163,15 +176,41 @@ export class ProjectActivityControls extends Component {
   //   (values && values.map((value) =>
   //     ({ value: value.value, label: value.label }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with O1, not names in search though
 
+  // P5 Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with F1, not names in search though
+  // works good with F2, users are visible after search, cleared, deleted, but not visible while search result selection
+  // gets array in first item instead of value property
   parseUserNames2 = (values) =>
-    (values && values.map((value) => ({ value: value.value, label: value.value }))) || undefined; // Invalid prop `children` supplied to `Value`, expected a ReactNode. works good with O1, not names in search though
+    (values && values.map((value) => ({ value: value.value, label: value.value }))) || undefined;
 
   // formatUserOptions = (values) =>
   //   values.content.map((value) => ({ value: value.id, label: value.name }));  // does not search users
 
   // formatUserOptions = (values) =>
   //   values.content.map((value) => ({ value: value, label: value.name }));
-  formatUserOptions = (values) => values.map((value) => ({ value, label: value.name }));
+
+  // FUO3  -  works good with P5, users are veisible after search, cleared, deleted, but not visible while search result selection
+  // formatUserOptions = (values) => values.map((value) => ({ value, label: value.name }));
+
+  // FUO4 return array of strings instead of objects, works with P5 and F2 but no users in search
+  // along with P5 and F2 shows grey screen after selecting second user
+  // formatUserOptions = (values) =>
+  //   values.map((value) => ({ value, label: value.label }));
+
+  // FUO5  // does not search users - no match found
+  // formatUserOptions = (values) =>
+  //   values.content.map((value) => ({ value: value.id, label: value.value }));
+
+  // FUO6 label again undefined
+  // formatUserOptions = (values) =>
+  //   values.map((value) => ({ value, label: value.value }));
+
+  // FUO7 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
+  // with P5&F2 no matches found in search
+  formatUserOptions = (values) => values.map((value) => ({ value, label: value }));
+
+  // FUO8 label again undefined , seems to work with P5 and F2 but crash after entering 2nd user
+  // formatUserOptions = (values) =>
+  // values.map((value) => ({ value:value, label: value }));
 
   // added from other widget
   formatFilterOptions = (values) =>
@@ -233,7 +272,7 @@ export class ProjectActivityControls extends Component {
             minLength={3}
             async
             uri={usernamesSearchUrl}
-            makeOptions={this.formatUsernames}
+            makeOptions={this.formatUsernamesOptions}
             multi
             removeSelected
           />
